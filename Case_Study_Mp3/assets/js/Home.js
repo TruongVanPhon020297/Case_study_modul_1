@@ -67,6 +67,10 @@ function addSong(index){
     displayTime();
     setInterval(displayTime,500);
     rangeBar.addEventListener("input",handleChangeBar);
+    document.querySelector("audio").addEventListener("ended",handleEndedSong);
+    function handleEndedSong(){
+        changeSong(1);
+    }
     function handleChangeBar(){
         document.querySelector("audio").currentTime = rangeBar.value ;
     }
@@ -124,7 +128,11 @@ function remoteSong(index){
     }
     displayTime();
     setInterval(displayTime,500);
-    rangeBar.addEventListener("change",handleChangeBar);
+    rangeBar.addEventListener("input",handleChangeBar);
+    document.querySelector("audio").addEventListener("ended",handleEndedSong);
+    function handleEndedSong(){
+        changeSong(1);
+    }
     function handleChangeBar(){
         document.querySelector("audio").currentTime = rangeBar.value ;
     }
