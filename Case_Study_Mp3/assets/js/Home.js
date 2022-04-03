@@ -8,10 +8,11 @@ function Musics(musicId,musicPhoto,musicName,singer,music_src){
 }
 // Tạo mảng để lưu các đối tượng bài hát
 let arr_music = [
-    new Musics(1,"assets/img/erik.jpg","Chạy về khóc với anh","Erik","assets/song/erik.mp3"),
-    new Musics(2,"assets/img/khacviet.jpg","Chạy về nơi phía anh","Khắc Việt","assets/song/khacviet.mp3"),
-    new Musics(3,"assets/img/vang.jpg","Em là hoàng hôn","Vàng","assets/song/vang.mp3"),
-    new Musics(4,"assets/img/nhuviet.jpg","Có em đây","Như Việt","assets/song/nhuviet.mp3"),
+    new Musics(1,"assets/img/jackpot.jpg","Jackpot","TheFatRat","assets/song/jackpot.mp3"),
+    new Musics(2,"assets/img/monody.jpg","Monody","TheFatRat","assets/song/monody.mp3"),
+    new Musics(3,"assets/img/symbolism.jpg","Symbolism","Electro-Light","assets/song/symbolism.mp3"),
+    new Musics(4,"assets/img/link.jpg","Link","Jim Yosef","assets/song/link.mp3"),
+    new Musics(5,"assets/img/echoes.jpg","Echoes","LTZ","assets/song/echoes.mp3")
 ]
 // Tạo biến để kiểm tra bài hát có đang phát hay không
 let isPlay = true;
@@ -49,6 +50,31 @@ function addSong(index){
     }
     display_playlist(musicPlaylist);
     display_playmusic(musicPlaylist);
+    let durationTime = document.querySelector(".container--playmusic--timer--duration");
+    let remainingTime = document.querySelector(".container--playmusic--timer--remaining");
+    let rangeBar = document.querySelector(".container--playmusic input");
+    function displayTime(){
+        let duration_value = document.querySelector("audio").duration;
+        remainingTime.textContent = formatTime(document.querySelector("audio").currentTime);
+        if(!duration_value){
+            durationTime.textContent = "00:00";
+        }else{
+            durationTime.textContent = formatTime(duration_value);
+        }
+        rangeBar.max = document.querySelector("audio").duration
+        rangeBar.value = document.querySelector("audio").currentTime;
+    }
+    displayTime();
+    setInterval(displayTime,500);
+    rangeBar.addEventListener("input",handleChangeBar);
+    function handleChangeBar(){
+        document.querySelector("audio").currentTime = rangeBar.value ;
+    }
+}
+function formatTime(number){
+    let minutes = Math.floor(number / 60);
+    let seconds = Math.floor(number - minutes * 60);
+    return `${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
 }
 // Hàm xóa bài hát khỏi danh sách phát
 function remoteSong(index){
@@ -58,24 +84,50 @@ function remoteSong(index){
              return a =  inde;
          }
      });
-     musicPlaylist.splice(a,1);
-     display_playlist(musicPlaylist);
-     if(musicPlaylist.length > 0){
-        display_playmusic(musicPlaylist);
-     }else {
-         document.querySelector(".container--playmusic").innerHTML = 
-         `
-                <img src="assets/img/music.jpg">
-                <h3>No Music</h3>
-                <p>No Singer</p>
-                <input type="range">
-                <div class="container--playmusic--icon">
-                    <i class="fa-solid fa-backward"></i>
-                    <a href="javascript:;" ><i class="fa-solid fa-play"></i></a>
-                    <i class="fa-solid fa-forward"></i>
-                </div>
-         `;
-     }
+    musicPlaylist.splice(a,1);
+    display_playlist(musicPlaylist);
+    if(musicPlaylist.length > 0){
+    display_playmusic(musicPlaylist);
+    }else {
+        document.querySelector(".container--playmusic").innerHTML = 
+        `
+            <img src="assets/img/music.jpg">
+            <h3>No Music</h3>
+            <p>No Singer</p>
+            <input type="range">
+            <audio src=""></audio>
+            <div class="container--playmusic--timer">
+                <div class="container--playmusic--timer--duration">00:00</div>
+                <div class="container--playmusic--timer--remaining">00:00</div>
+            </div>
+            <div class="container--playmusic--icon">
+                <i class="fa-solid fa-backward"></i>
+                <a href="javascript:;" ><i class="fa-solid fa-play"></i></a>
+                <i class="fa-solid fa-forward"></i>
+            </div>
+        `;
+        clearInterval(displayTime);
+    }
+    let durationTime = document.querySelector(".container--playmusic--timer--duration");
+    let remainingTime = document.querySelector(".container--playmusic--timer--remaining");
+    let rangeBar = document.querySelector(".container--playmusic input");
+    function displayTime(){
+        let duration_value = document.querySelector("audio").duration;
+        remainingTime.textContent = formatTime(document.querySelector("audio").currentTime);
+        if(!duration_value){
+            durationTime.textContent = "00:00";
+        }else{
+            durationTime.textContent = formatTime(duration_value);
+        }
+        rangeBar.max = document.querySelector("audio").duration
+        rangeBar.value = document.querySelector("audio").currentTime;
+    }
+    displayTime();
+    setInterval(displayTime,500);
+    rangeBar.addEventListener("change",handleChangeBar);
+    function handleChangeBar(){
+        document.querySelector("audio").currentTime = rangeBar.value ;
+    }
  }
  // Hàm hiển thị danh sách phát
 function display_playlist(arr){
@@ -108,6 +160,10 @@ function display_playmusic(arr){
         <p>Ca sỹ : ${arr[0].singer}</p>
         <input type="range">
         <audio src="${arr[0].music_src}"></audio>
+        <div class="container--playmusic--timer">
+            <div class="container--playmusic--timer--duration">00:00</div>
+            <div class="container--playmusic--timer--remaining">00:00</div>
+        </div>
         <div class="container--playmusic--icon">
             <i class="fa-solid fa-backward" onclick = "changeSong(-1)"></i>
             <a href="javascript:;" onclick = "playMusic(${arr[0].musicId})" ><i class="fa-solid fa-play"></i></a>

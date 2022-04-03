@@ -150,6 +150,13 @@ body{
     border-radius: 100rem;
     background-image: linear-gradient(to right, rgb(207, 51, 77) , yellow);
 }
+.container--playmusic--timer {
+    width: 100%;
+}
+.container--playmusic--timer--duration {
+    width: 50%;
+    float: left;
+}
 /* End container--playmusic */
 
 

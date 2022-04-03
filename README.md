@@ -1,1 +1,4 @@
-# Case_study_modul_1
+## Sản phẩm trình phát nhạc
+
+# I.Kiến thức sử dụng : 
+   
