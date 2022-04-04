@@ -82,13 +82,16 @@ function formatTime(number){
 }
 // Hàm xóa bài hát khỏi danh sách phát
 function remoteSong(index){
+    let confirmed = window.confirm("Are you sure to remove this song?");
     let a ; 
     let index_delete =  musicPlaylist.forEach(function(value,inde){
          if(value.musicId == index){
              return a =  inde;
          }
      });
-    musicPlaylist.splice(a,1);
+
+    if(confirmed){
+        musicPlaylist.splice(a,1);
     display_playlist(musicPlaylist);
     if(musicPlaylist.length > 0){
     display_playmusic(musicPlaylist);
@@ -111,6 +114,7 @@ function remoteSong(index){
             </div>
         `;
         clearInterval(displayTime);
+    }
     }
     let durationTime = document.querySelector(".container--playmusic--timer--duration");
     let remainingTime = document.querySelector(".container--playmusic--timer--remaining");
