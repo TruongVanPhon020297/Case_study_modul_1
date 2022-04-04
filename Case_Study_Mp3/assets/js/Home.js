@@ -82,7 +82,7 @@ function formatTime(number){
 }
 // Hàm xóa bài hát khỏi danh sách phát
 function remoteSong(index){
-    let confirmed = window.confirm("Are you sure to remove this song?");
+    let confirmed = window.confirm("Bạn có muốn xóa bài hát này không ?");
     let a ; 
     let index_delete =  musicPlaylist.forEach(function(value,inde){
          if(value.musicId == index){
