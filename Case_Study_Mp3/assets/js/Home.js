@@ -83,15 +83,14 @@ function formatTime(number){
 // Hàm xóa bài hát khỏi danh sách phát
 function remoteSong(index){
     let confirmed = window.confirm("Bạn có muốn xóa bài hát này không ?");
-    let a ; 
-    let index_delete =  musicPlaylist.forEach(function(value,inde){
+    let index_delete =  musicPlaylist.forEach(function(value,index_value){
          if(value.musicId == index){
-             return a =  inde;
+             return  index_value;
          }
      });
 
     if(confirmed){
-        musicPlaylist.splice(a,1);
+        musicPlaylist.splice(index_delete,1);
     display_playlist(musicPlaylist);
     if(musicPlaylist.length > 0){
     display_playmusic(musicPlaylist);
