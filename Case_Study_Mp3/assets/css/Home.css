@@ -184,7 +184,7 @@ body{
 .container--musicplaylists--thumb {
     width: 100%;
     height: 100%;
-    background: red;
+    background: #f1c40f;
     overflow: auto;
 }
 /* End container--musicplaylists */ 
