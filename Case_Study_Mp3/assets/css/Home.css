@@ -157,6 +157,9 @@ body{
     width: 50%;
     float: left;
 }
+.container--playmusic--loop i {
+    cursor: pointer;
+}
 /* End container--playmusic */
 
 
@@ -204,3 +207,6 @@ body{
   ::-webkit-scrollbar-thumb:hover {
     background: #555; 
   }
+.pink {
+      color: pink;
+}

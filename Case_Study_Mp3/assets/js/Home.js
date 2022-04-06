@@ -38,6 +38,7 @@ let htmls = arr_music.map(function(music){
 });
 document.querySelector(".container--musiclists--thumb").innerHTML = htmls.join("");
 let musicPlaylist = [];
+const music_key = "music_data";
 // Hàm thêm bài hát vào danh sách phát
 function addSong(index){
     let foundSong = musicPlaylist.find(function(song){
@@ -47,6 +48,7 @@ function addSong(index){
         alert("Bài hát đã có trong danh sách phát");
     }else {
         musicPlaylist.push(arr_music[index-1]);
+        setLocalStorage(music_key, musicPlaylist);
     }
     display_playlist(musicPlaylist);
     display_playmusic(musicPlaylist);
@@ -75,6 +77,7 @@ function addSong(index){
         document.querySelector("audio").currentTime = rangeBar.value ;
     }
 }
+// Hàm để format lại thời gian của bài hát
 function formatTime(number){
     let minutes = Math.floor(number / 60);
     let seconds = Math.floor(number - minutes * 60);
@@ -83,17 +86,18 @@ function formatTime(number){
 // Hàm xóa bài hát khỏi danh sách phát
 function remoteSong(index){
     let confirmed = window.confirm("Bạn có muốn xóa bài hát này không ?");
-    let index_delete =  musicPlaylist.forEach(function(value,index_value){
+    let index_delete =  musicPlaylist.forEach(function(value,inde){
          if(value.musicId == index){
-             return  index_value;
+             return inde;
          }
      });
 
     if(confirmed){
         musicPlaylist.splice(index_delete,1);
-    display_playlist(musicPlaylist);
+        display_playlist(musicPlaylist);
+        setLocalStorage(music_key, musicPlaylist);
     if(musicPlaylist.length > 0){
-    display_playmusic(musicPlaylist);
+        display_playmusic(musicPlaylist);
     }else {
         document.querySelector(".container--playmusic").innerHTML = 
         `
@@ -180,9 +184,23 @@ function display_playmusic(arr){
             <a href="javascript:;" onclick = "playMusic(${arr[0].musicId})" ><i class="fa-solid fa-play"></i></a>
             <i class="fa-solid fa-forward" onclick = "changeSong(1)"></i>
         </div>
+        <div class="container--playmusic--loop">
+            <i class="fa-solid fa-arrow-rotate-left" onclick = "loopSong()"></i>
+        </div>
     `;
 }
-
+let loopMusic = true;
+function loopSong(){
+    if(loopMusic){
+        document.querySelector(".container--playmusic--loop i").classList.add("pink");
+        document.querySelector(".container--playmusic audio").loop = true;
+        loopMusic = false;
+    }else {
+        document.querySelector(".container--playmusic--loop i").classList.remove("pink");
+        document.querySelector(".container--playmusic audio").loop = false;
+        loopMusic = true;
+    }
+}
 function playMusic(index){
     if(isPlay){
         document.querySelector(".container--playmusic audio").play();
@@ -220,3 +238,20 @@ function diplay_changeSong(index){
     document.querySelector(".container--playmusic p").innerHTML = `Ca sỹ : ${musicPlaylist[index].singer}`;
     document.querySelector(".container--playmusic audio").src = `${musicPlaylist[index].music_src}`;
 }
+function initUsers(){
+    if(getLocalStorage(music_key) == null){
+        setLocalStorage(music_key,musicPlaylist)
+    }
+    else{
+        musicPlaylist = getLocalStorage(music_key);
+        display_playlist(musicPlaylist);
+    }
+}
+function setLocalStorage(key, data){
+    localStorage.setItem(key, JSON.stringify(data))
+}
+
+function getLocalStorage(key){
+    return JSON.parse(localStorage.getItem(key))
+}
+initUsers();
