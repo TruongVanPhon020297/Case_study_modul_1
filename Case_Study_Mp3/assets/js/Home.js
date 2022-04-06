@@ -115,6 +115,9 @@ function remoteSong(index){
                 <a href="javascript:;" ><i class="fa-solid fa-play"></i></a>
                 <i class="fa-solid fa-forward"></i>
             </div>
+            <div class="container--playmusic--loop">
+                <i class="fa-solid fa-arrow-rotate-left"></i>
+            </div>
         `;
         clearInterval(displayTime);
     }
