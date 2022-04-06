@@ -245,7 +245,32 @@ function initUsers(){
     else{
         musicPlaylist = getLocalStorage(music_key);
         display_playlist(musicPlaylist);
-    }
+        display_playmusic(musicPlaylist);
+        let durationTime = document.querySelector(".container--playmusic--timer--duration");
+        let remainingTime = document.querySelector(".container--playmusic--timer--remaining");
+        let rangeBar = document.querySelector(".container--playmusic input");
+        function displayTime(){
+            let duration_value = document.querySelector("audio").duration;
+            remainingTime.textContent = formatTime(document.querySelector("audio").currentTime);
+            if(!duration_value){
+                durationTime.textContent = "00:00";
+            }else{
+                durationTime.textContent = formatTime(duration_value);
+            }
+            rangeBar.max = document.querySelector("audio").duration
+            rangeBar.value = document.querySelector("audio").currentTime;
+        }
+        displayTime();
+        setInterval(displayTime,500);
+        rangeBar.addEventListener("input",handleChangeBar);
+        document.querySelector("audio").addEventListener("ended",handleEndedSong);
+        function handleEndedSong(){
+            changeSong(1);
+        }
+        function handleChangeBar(){
+            document.querySelector("audio").currentTime = rangeBar.value ;
+        }
+        }
 }
 function setLocalStorage(key, data){
     localStorage.setItem(key, JSON.stringify(data))
